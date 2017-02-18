@@ -2,7 +2,9 @@ use strict;
 use warnings;
 use 5.010;
 
-use Win32::SystemInfo;
+use Win32::SystemInfo();
+use Win32::DriveInfo();
+
 use Data::Dumper qw(Dumper); #for debug
 
 my $logFileName = shift or die "Usage is: %0 LOG_FILE_NAME"; # make sure we got a target file.
@@ -15,12 +17,18 @@ my %memoryDataHash = GetMemoryInfo();
 PrintHash( %cpuDataHash );
 PrintHash( %memoryDataHash );
 
+my @driveLetters = GetDriveInfo();
+print Dumper \@driveLetters; #for debug
 
 close $logFileHandle;
 
 ##############################################
 ######### start of sub block  ################
 ##############################################
+
+sub GetDriveInfo {
+    return Win32::DriveInfo::DrivesInUse();
+}
 
 
 sub GetMemoryInfo {
