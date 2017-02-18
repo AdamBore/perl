@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use 5.010;
 
-use Win64::SystemInfo;
+use Win32::SystemInfo;
 use Data::Dumper qw(Dumper); #for debug
 
 my $logFileName = shift or die "Usage is: %0 LOG_FILE_NAME"; # make sure we got a target file.
@@ -19,7 +19,7 @@ close $logFileHandle;
 
 sub GetMemoryInfo {
   my %memoryDataHash;
-  Win64::SystemInfo::MemoryStatus( %memoryDataHash,"MB" );
+  Win32::SystemInfo::MemoryStatus( %memoryDataHash,"MB" );
   return %memoryDataHash;
 }
 
@@ -37,7 +37,7 @@ sub PrintHash {
 
 sub GetCpuInfo {
     my %cpuDataHash;
-    Win64::SystemInfo::ProcessorInfo( %cpuDataHash );
+    Win32::SystemInfo::ProcessorInfo( %cpuDataHash );
 
     my %parsedCPUData;
     $parsedCPUData{ NumProcessors } = $cpuDataHash{ NumProcessors };
