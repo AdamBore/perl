@@ -15,7 +15,13 @@ my %memoryDataHash = GetMemoryInfo();
 PrintHash( %cpuDataHash );
 PrintHash( %memoryDataHash );
 
+
 close $logFileHandle;
+
+##############################################
+######### start of sub block  ################
+##############################################
+
 
 sub GetMemoryInfo {
   my %memoryDataHash;
