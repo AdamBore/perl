@@ -19,15 +19,19 @@ open( my $logFileHandle, ">" , $logFileName ) or die "Cannot open log file: '$lo
 
 my %cpuDataHash = GetCpuInfo();
 my %memoryDataHash = GetMemoryInfo();
-# print Dumper \%cpuDataHash; #for debug
+
 # PrintHash( %cpuDataHash );
 # PrintHash( %memoryDataHash );
 
+my %dataForHTML = ( %cpuDataHash, %memoryDataHash );
+
+My::HTMLCreator::GenerateSystemHtml( $logFileHandle, %dataForHTML );
+
 my @driveLetters = GetDriveInfo();
-# print Dumper \@driveLetters; #for debug
-foreach my $driveLetter ( @driveLetters ){
-    print $logFileHandle "Drive $driveLetter has ", GetFreeInGiga( $driveLetter ), " GB of free space.\n";
-}
+
+# foreach my $driveLetter ( @driveLetters ){
+#     print $logFileHandle "Drive $driveLetter has ", GetFreeInGiga( $driveLetter ), " GB of free space.\n";
+# }
 
 close $logFileHandle;
 
@@ -47,7 +51,7 @@ sub GetDriveInfo {
 
 sub GetMemoryInfo {
   my %memoryDataHash;
-  Win32::SystemInfo::MemoryStatus( %memoryDataHash,"MB" );
+  Win32::SystemInfo::MemoryStatus( %memoryDataHash,"GB" );
   return %memoryDataHash;
 }
 
