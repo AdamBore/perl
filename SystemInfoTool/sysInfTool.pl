@@ -20,6 +20,10 @@ open( my $logFileHandle, ">" , $logFileName ) or die "Cannot open log file: '$lo
 my %cpuDataHash = GetCpuInfo();
 my %memoryDataHash = GetMemoryInfo();
 
+foreach my $key ( keys %memoryDataHash ) {
+    $memoryDataHash{ $key } = RoundToTwoPlaces( $memoryDataHash{ $key } );
+}
+
 my %dataForHTML = ( %cpuDataHash, %memoryDataHash );
 
 
@@ -63,8 +67,16 @@ sub ConvertBytesToGiga {
     my $dataInBytes = shift;
     my $places = 2;
     my $factor = 10**$places;
-    return int( ($dataInBytes / $bytsInGiga ) * $factor ) / $factor;
+    return RoundToTwoPlaces( $dataInBytes / $bytsInGiga );
 }
+
+sub RoundToTwoPlaces {
+    my $number = shift @_;
+    my $places = 2;
+    my $factor = 10**$places;
+    return int( $number * $factor ) / $factor;
+}
+
 
 sub GetDriveInfo {
     return Win32::DriveInfo::DrivesInUse();
@@ -76,15 +88,15 @@ sub GetMemoryInfo {
   return %memoryDataHash;
 }
 
-sub PrintHash {
-    my %_hashForPrinting = @_;
-    # print Dumper \%_hashForPrinting; #for debug
-    if( %_hashForPrinting ){
-        foreach my $key ( sort keys %_hashForPrinting ){
-            print $logFileHandle "$key $_hashForPrinting{$key}.\n";
-        }
-    }
-}
+# sub PrintHash {
+#     my %_hashForPrinting = @_;
+#     # print Dumper \%_hashForPrinting; #for debug
+#     if( %_hashForPrinting ){
+#         foreach my $key ( sort keys %_hashForPrinting ){
+#             print $logFileHandle "$key $_hashForPrinting{$key}.\n";
+#         }
+#     }
+# }
 
 sub GetCpuInfo {
     my %cpuDataHash;
