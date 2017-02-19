@@ -18,13 +18,22 @@ PrintHash( %cpuDataHash );
 PrintHash( %memoryDataHash );
 
 my @driveLetters = GetDriveInfo();
-print Dumper \@driveLetters; #for debug
+# print Dumper \@driveLetters; #for debug
+foreach my $driveLetter ( @driveLetters ){
+    print "Drive $driveLetter has ", GetFreeInGiga( $driveLetter ), " GB of free space.\n";
+}
 
 close $logFileHandle;
 
 ##############################################
 ######### start of sub block  ################
 ##############################################
+
+sub GetFreeInGiga {
+    my $bytsInGiga = 1024 * 1024 * 1024;
+    return Win32::DriveInfo::DriveSpace( shift ) / $bytsInGiga;
+}
+
 
 sub GetDriveInfo {
     return Win32::DriveInfo::DrivesInUse();
