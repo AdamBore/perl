@@ -39,7 +39,6 @@ sub GetDriveInfo {
     return Win32::DriveInfo::DrivesInUse();
 }
 
-
 sub GetMemoryInfo {
   my %memoryDataHash;
   Win32::SystemInfo::MemoryStatus( %memoryDataHash,"MB" );
@@ -55,8 +54,6 @@ sub PrintHash {
         }
     }
 }
-
-
 
 sub GetCpuInfo {
     my %cpuDataHash;
