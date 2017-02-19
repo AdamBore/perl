@@ -61,7 +61,9 @@ sub GetDriveData {
 sub ConvertBytesToGiga {
     my $bytsInGiga = 1024 * 1024 * 1024;
     my $dataInBytes = shift;
-    return $dataInBytes / $bytsInGiga;
+    my $places = 2;
+    my $factor = 10**$places;
+    return int( ($dataInBytes / $bytsInGiga ) * $factor ) / $factor;
 }
 
 sub GetDriveInfo {
