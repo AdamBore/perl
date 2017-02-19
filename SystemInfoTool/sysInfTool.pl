@@ -5,17 +5,23 @@ use 5.010;
 use Win32::SystemInfo();
 use Win32::DriveInfo();
 
-use Data::Dumper qw(Dumper); #for debug
+use File::Basename qw(dirname);
+use Cwd  qw(abs_path);
+use lib dirname(dirname abs_path $0) . '/lib';
+use My::HTMLCreator;
 
-my $logFileName = shift or die "Usage is: %0 LOG_FILE_NAME"; # make sure we got a target file.
+
+# use Data::Dumper qw(Dumper); #for debug
+
+my $logFileName = shift or die "Usage is: $0 LOG_FILE_NAME"; # make sure we got a target file.
 
 open( my $logFileHandle, ">" , $logFileName ) or die "Cannot open log file: '$logFileName'."; #make sure we have a place to write to.
 
 my %cpuDataHash = GetCpuInfo();
 my %memoryDataHash = GetMemoryInfo();
 # print Dumper \%cpuDataHash; #for debug
-PrintHash( %cpuDataHash );
-PrintHash( %memoryDataHash );
+# PrintHash( %cpuDataHash );
+# PrintHash( %memoryDataHash );
 
 my @driveLetters = GetDriveInfo();
 # print Dumper \@driveLetters; #for debug
