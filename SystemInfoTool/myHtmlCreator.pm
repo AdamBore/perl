@@ -25,7 +25,7 @@ sub GenerateSystemHtml {
 
     # perform subsitutions.
     foreach my $key ( keys %_dataToInsert ) {
-        $fileInAString =~ s/$key/$_dataToInsert{ $key }/g;
+        $fileInAString =~ s/"@$key@"/$_dataToInsert{ $key }/g;
     }
 
     # write new file.
