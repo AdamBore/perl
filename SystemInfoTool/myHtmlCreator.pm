@@ -7,15 +7,15 @@ use Exporter qw( import );
 our @EXPORT_OK = qw( GenerateSystemHtml );
 
 sub GenerateSystemHtml {
-    my %dataToInsert = shift;
-    if( not %dataToInsert )
+    my $targetFileHandle = shift or die "No Target file to write HTML report to.";
+    my %dataToInsert = shift or return;
+    my $fileInAString;
     {
-        return;
+        local $/ = undef;
+        $fileInAString = <$targetFileHandle>;
     }
-
-    open file
-    put file in string
-    perform subsitutions.
-    return new string.
+    # put file in string
+    # perform subsitutions.
+    # return new string.
     return "blabla";
 }
