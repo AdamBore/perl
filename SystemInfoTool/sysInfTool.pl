@@ -11,7 +11,7 @@ use lib dirname(dirname abs_path $0) . '/lib';
 use My::HTMLCreator;
 
 
-# use Data::Dumper qw(Dumper); #for debug
+use Data::Dumper qw(Dumper); #for debug
 
 my $logFileName = shift or die "Usage is: $0 LOG_FILE_NAME"; # make sure we got a target file.
 
@@ -20,30 +20,49 @@ open( my $logFileHandle, ">" , $logFileName ) or die "Cannot open log file: '$lo
 my %cpuDataHash = GetCpuInfo();
 my %memoryDataHash = GetMemoryInfo();
 
-# PrintHash( %cpuDataHash );
-# PrintHash( %memoryDataHash );
-
 my %dataForHTML = ( %cpuDataHash, %memoryDataHash );
 
-My::HTMLCreator::GenerateSystemHtml( $logFileHandle, %dataForHTML );
 
-my @driveLetters = GetDriveInfo();
+my %drivesData;
+foreach my $driveLetter ( GetDriveInfo() ) {
+    my %singleDriveData = GetDriveData( $driveLetter );
+    # print Dumper \%singleDriveData; #for debug
+    $drivesData{ $driveLetter } = \%singleDriveData;
+    # print Dumper \%drivesData; #for debug
 
-# foreach my $driveLetter ( @driveLetters ){
-#     print $logFileHandle "Drive $driveLetter has ", GetFreeInGiga( $driveLetter ), " GB of free space.\n";
-# }
+}
 
+My::HTMLCreator::GenerateSystemHtml( $logFileHandle, \%dataForHTML, \%drivesData );
 close $logFileHandle;
 
 ##############################################
 ######### start of sub block  ################
 ##############################################
 
-sub GetFreeInGiga {
-    my $bytsInGiga = 1024 * 1024 * 1024;
-    return Win32::DriveInfo::DriveSpace( shift ) / $bytsInGiga;
+sub GetDriveData {
+    my @singleDriveData =  Win32::DriveInfo::DriveSpace( shift );
+    my @parameterNames = qw( SectorsPerCluster BytesPerSector NumberOfFreeClusters TotalNumberOfClusters
+                                FreeBytesAvailableToCaller TOTAL_SPACE FREE_SPACE );
+    my %singleDriveDataMap;
+    while ( @parameterNames ) {
+        my $key = shift @parameterNames;
+        my $value = shift @singleDriveData;
+        $singleDriveDataMap{ $key } = $value;
+    }
+
+    $singleDriveDataMap{ TOTAL_SPACE } = ConvertBytesToGiga( $singleDriveDataMap{ TOTAL_SPACE } );
+    $singleDriveDataMap{ FREE_SPACE } = ConvertBytesToGiga( $singleDriveDataMap{ FREE_SPACE } );
+    $singleDriveDataMap{ FreeBytesAvailableToCaller } = ConvertBytesToGiga( $singleDriveDataMap{ FreeBytesAvailableToCaller } );
+    # print Dumper \%singleDriveDataMap; #for debug
+
+    return %singleDriveDataMap;
 }
 
+sub ConvertBytesToGiga {
+    my $bytsInGiga = 1024 * 1024 * 1024;
+    my $dataInBytes = shift;
+    return $dataInBytes / $bytsInGiga;
+}
 
 sub GetDriveInfo {
     return Win32::DriveInfo::DrivesInUse();
