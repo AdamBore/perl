@@ -20,7 +20,7 @@ PrintHash( %memoryDataHash );
 my @driveLetters = GetDriveInfo();
 # print Dumper \@driveLetters; #for debug
 foreach my $driveLetter ( @driveLetters ){
-    print "Drive $driveLetter has ", GetFreeInGiga( $driveLetter ), " GB of free space.\n";
+    print $logFileHandle "Drive $driveLetter has ", GetFreeInGiga( $driveLetter ), " GB of free space.\n";
 }
 
 close $logFileHandle;
@@ -51,7 +51,7 @@ sub PrintHash {
     # print Dumper \%_hashForPrinting; #for debug
     if( %_hashForPrinting ){
         foreach my $key ( sort keys %_hashForPrinting ){
-            print "$key $_hashForPrinting{$key}.\n";
+            print $logFileHandle "$key $_hashForPrinting{$key}.\n";
         }
     }
 }
