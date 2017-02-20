@@ -10,7 +10,7 @@ use Cwd  qw(abs_path);
 use lib dirname(dirname abs_path $0) . '/lib';
 use My::HTMLCreator;
 use My::DiskDataCollector qw( GetDriveInfo GetDriveData );
-
+use My::CPUInfoCollector qw( GetCpuInfo );
 
 # use Data::Dumper qw(Dumper); #for debug
 
@@ -70,18 +70,18 @@ sub GetMemoryInfo {
 #     }
 # }
 
-sub GetCpuInfo {
-    my %cpuDataHash;
-    Win32::SystemInfo::ProcessorInfo( %cpuDataHash );
-
-    my %parsedCPUData;
-    $parsedCPUData{ NumProcessors } = $cpuDataHash{ NumProcessors };
-
-    foreach my $key ( keys %{$cpuDataHash{ Processor0 }} )
-    {
-        # print "$key = $cpuDataHash{ Processor0 }{$key}\n"; #for debug
-        $parsedCPUData{ $key } = $cpuDataHash{ Processor0 }{$key};
-    }
-    # print Dumper \%parsedCPUData; #for debug
-    return %parsedCPUData;
-}
+# sub GetCpuInfo {
+#     my %cpuDataHash;
+#     Win32::SystemInfo::ProcessorInfo( %cpuDataHash );
+#
+#     my %parsedCPUData;
+#     $parsedCPUData{ NumProcessors } = $cpuDataHash{ NumProcessors };
+#
+#     foreach my $key ( keys %{$cpuDataHash{ Processor0 }} )
+#     {
+#         # print "$key = $cpuDataHash{ Processor0 }{$key}\n"; #for debug
+#         $parsedCPUData{ $key } = $cpuDataHash{ Processor0 }{$key};
+#     }
+#     # print Dumper \%parsedCPUData; #for debug
+#     return %parsedCPUData;
+# }
