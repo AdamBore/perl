@@ -11,7 +11,7 @@ use lib dirname(dirname abs_path $0) . '/lib';
 use My::HTMLCreator;
 
 
-use Data::Dumper qw(Dumper); #for debug
+# use Data::Dumper qw(Dumper); #for debug
 
 my $logFileName = shift or die "Usage is: $0 LOG_FILE_NAME"; # make sure we got a target file.
 
@@ -36,7 +36,9 @@ foreach my $driveLetter ( GetDriveInfo() ) {
 
 }
 
+#create html from data *could create another pm later on to save data.
 My::HTMLCreator::GenerateSystemHtml( $logFileHandle, \%dataForHTML, \%drivesData );
+
 close $logFileHandle;
 
 ##############################################
