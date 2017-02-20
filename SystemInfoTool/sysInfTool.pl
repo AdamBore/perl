@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use 5.010;
 
-use Win32::SystemInfo();
+# use Win32::SystemInfo();
 # use Win32::DriveInfo();
 
 use File::Basename qw(dirname);
@@ -10,7 +10,7 @@ use Cwd  qw(abs_path);
 use lib dirname(dirname abs_path $0) . '/lib';
 use My::HTMLCreator;
 use My::DiskDataCollector qw( GetDriveInfo GetDriveData );
-use My::CPUInfoCollector qw( GetCpuInfo );
+use My::SysInfoCollector qw( GetCpuInfo GetMemoryInfo );
 
 # use Data::Dumper qw(Dumper); #for debug
 
@@ -53,13 +53,6 @@ sub RoundToTwoPlaces {
     return int( $number * $factor ) / $factor;
 }
 
-
-sub GetMemoryInfo {
-  my %memoryDataHash;
-  Win32::SystemInfo::MemoryStatus( %memoryDataHash,"GB" );
-  return %memoryDataHash;
-}
-
 # sub PrintHash {
 #     my %_hashForPrinting = @_;
 #     # print Dumper \%_hashForPrinting; #for debug
@@ -68,20 +61,4 @@ sub GetMemoryInfo {
 #             print $logFileHandle "$key $_hashForPrinting{$key}.\n";
 #         }
 #     }
-# }
-
-# sub GetCpuInfo {
-#     my %cpuDataHash;
-#     Win32::SystemInfo::ProcessorInfo( %cpuDataHash );
-#
-#     my %parsedCPUData;
-#     $parsedCPUData{ NumProcessors } = $cpuDataHash{ NumProcessors };
-#
-#     foreach my $key ( keys %{$cpuDataHash{ Processor0 }} )
-#     {
-#         # print "$key = $cpuDataHash{ Processor0 }{$key}\n"; #for debug
-#         $parsedCPUData{ $key } = $cpuDataHash{ Processor0 }{$key};
-#     }
-#     # print Dumper \%parsedCPUData; #for debug
-#     return %parsedCPUData;
 # }
