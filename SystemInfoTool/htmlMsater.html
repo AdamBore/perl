@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 <html>
     <link rel="stylesheet" href="Design.css">
-    <div class="container">
         <head>
         <title>System Information </title>
         </head>
 
         <body>
             <h1> System Information </h1>
-                <h2> CPU Information </h2>
-                    Vendor: @VendorIdentifier@.<br>
-                    CPU Name: @Identifier@.<br>
-                    Number of CPUs: @NumProcessors@. <br>
-                    Clock Speed: @MHZ@ MHz.<br>
-                <h2> Memory Information </h2>
-                    Total Physical Memmory: @TotalPhys@ GB.<br>
-                    Free Physical Memmory: @AvailPhys@ GB.<br>
-                    Memory Load: @MemLoad@%.<br>
-                <h2> Disk Information </h2>
-                    @DRIVES@
+            <div class ="relative">
+                    <div class="column">
+                    <h2> CPU Information </h2>
+                    <ul>
+                        <il>Vendor: @VendorIdentifier@.</il><br>
+                        <il>CPU Name: @Identifier@.</il><br>
+                        <il>Number of CPUs: @NumProcessors@.</il><br>
+                        <il>Clock Speed: @MHZ@ MHz.</il><br>
+                    </ul>
+                    </div>
+                    <div class="column">
+                    <h2> Memory Information </h2>
+                        <il>Total Physical Memmory: @TotalPhys@ GB.</il><br>
+                        <il>Free Physical Memmory: @AvailPhys@ GB.</il><br>
+                        <il>Memory Load: @MemLoad@%.</il><br>
+                    </div>
+                    <div class="column">
+                    <h2> Disks Information </h2>
+                        @DRIVES@
+                    </div>
+                </div>
         </body>
     </div>
 </html>
